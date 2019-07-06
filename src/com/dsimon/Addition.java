@@ -11,8 +11,33 @@ public class Addition {
         this.added = false;
     }
 
-    public void addToBurger() {
-        this.added = true;
+    public int addToBurger() {
+        if (added) {
+            System.out.println("You already added " + name);
+            return 0;
+        } else {
+            this.added = true;
+            return 1;
+        }
+    }
+
+    public void outputListItem(int number) {
+        if (!isAdded()) {
+            System.out.println(" * " + name + " $" + String.format("%.2f", price) + " (" + number + ")");
+        }
+    }
+
+    public void outputListItem() {
+        System.out.println(" * " + name + " $" + String.format("%.2f", price));
+    }
+
+    public double pricingAtEnd() {
+        if (added) {
+            outputListItem();
+            return this.price;
+        } else {
+            return 0;
+        }
     }
 
     public String getName() {

@@ -9,31 +9,26 @@ public class Burger {
     private String meat;
     private int toppings;
     private int maxToppings;
-    private Addition lettuce = new Lettuce();
-    private Addition tomato = new Tomato();
-    private Addition cheese = new Cheese();
-    private Addition onion = new Onion();
+    private Lettuce lettuce = new Lettuce();
+    private Tomato tomato = new Tomato();
+    private Cheese cheese = new Cheese();
+    private Onion onion = new Onion();
+    private Bacon bacon = new Bacon();
+    private Mushroom mushroom = new Mushroom();
 
     private int getToppings() {
         Scanner scanner = new Scanner(System.in);
 
-        System.out.println(lettuce.getClass());
-        while (toppings < maxToppings) {
-            System.out.println("Select a topping (" + toppings + "/" + maxToppings + "):");
+        while (this.toppings < this.maxToppings) {
+            System.out.println("Select a topping (" + this.toppings + "/" + this.maxToppings + "):");
             int counter = 1;
             System.out.println(" * Done (0)");
-            if (!this.lettuce.isAdded()) {
-                System.out.println(" * " + lettuce.getName() + " $" + String.format("%.2f", lettuce.getPrice()) + " (1)");
-            }
-            if (!this.tomato.isAdded()) {
-                System.out.println(" * " + tomato.getName() + " $" + String.format("%.2f", tomato.getPrice()) + " (2)");
-            }
-            if (!this.cheese.isAdded()) {
-                System.out.println(" * " + cheese.getName() + " $" + String.format("%.2f", cheese.getPrice()) + " (3)");
-            }
-            if (!this.onion.isAdded()) {
-                System.out.println(" * " + onion.getName() + " $" + String.format("%.2f", onion.getPrice()) + " (4)");
-            }
+            this.lettuce.outputListItem(1);
+            this.tomato.outputListItem(2);
+            this.cheese.outputListItem(3);
+            this.onion.outputListItem(4);
+            this.bacon.outputListItem(5);
+            this.mushroom.outputListItem(6);
 
             boolean hasNextInt = scanner.hasNextInt();
             if (hasNextInt) {
@@ -44,36 +39,22 @@ public class Burger {
                         scanner.close();
                         return -1;
                     case 1:
-                        if (!this.lettuce.isAdded()) {
-                            toppings++;
-                        } else {
-                            System.out.println("You already added " + lettuce.getName());
-                        }
-                        this.lettuce.addToBurger();
+                        this.toppings += this.lettuce.addToBurger();
                         break;
                     case 2:
-                        if (!this.tomato.isAdded()) {
-                            toppings++;
-                        } else {
-                            System.out.println("You already added " + tomato.getName());
-                        }
-                        this.tomato.addToBurger();
+                        this.toppings += this.tomato.addToBurger();
                         break;
                     case 3:
-                        if (!this.cheese.isAdded()) {
-                            toppings++;
-                        } else {
-                            System.out.println("You already added " + cheese.getName());
-                        }
-                        this.cheese.addToBurger();
+                        this.toppings += this.cheese.addToBurger();
                         break;
                     case 4:
-                        if (!this.onion.isAdded()) {
-                            toppings++;
-                        } else {
-                            System.out.println("You already added " + onion.getName());
-                        }
-                        this.onion.addToBurger();
+                        this.toppings += this.onion.addToBurger();
+                        break;
+                    case 5:
+                        this.toppings += this.bacon.addToBurger();
+                        break;
+                    case 6:
+                        this.toppings += this.mushroom.addToBurger();
                         break;
                     default:
                         System.out.println("Invalid Input");
@@ -87,38 +68,33 @@ public class Burger {
         return -1;
     }
 
-    public Burger() {
-        this.name = "Regular Burger";
-        this.price = 9.00;
-        this.roll = "Sesame";
-        this.meat = "Ground Beef";
+    public Burger(String name, double price, String roll, String meat, int maxToppings) {
+        this.name = name;
+        this.price = price;
+        this.roll = roll;
+        this.meat = meat;
         this.toppings = 0;
-        this.maxToppings = 4;
+        this.maxToppings = maxToppings;
 
         getToppings();
     }
 
-    public void priceBurger() {
-        double totalPrice = price;
+    public double priceBurger() {
+        double totalPrice = this.price;
 
-        System.out.println("\n\nThe price for your " + meat + " " + name + " on a " + roll + " roll is:\n" +
-                            " * Burger: $" + String.format("%.2f", price));
-        if (lettuce.isAdded()) {
-            System.out.println(" * " + lettuce.getName() + " $" + String.format("%.2f", lettuce.getPrice()));
-            totalPrice += lettuce.getPrice();
-        }
-        if (tomato.isAdded()) {
-            System.out.println(" * " + tomato.getName() + " $" + String.format("%.2f", tomato.getPrice()));
-            totalPrice += tomato.getPrice();
-        }
-        if (cheese.isAdded()) {
-            System.out.println(" * " + cheese.getName() + " $" + String.format("%.2f", cheese.getPrice()));
-            totalPrice += cheese.getPrice();
-        }
-        if (onion.isAdded()) {
-            System.out.println(" * " + onion.getName() + " $" + String.format("%.2f", onion.getPrice()));
-            totalPrice += onion.getPrice();
-        }
-        System.out.println("\nYour total price was: $" + String.format("%.2f", totalPrice));
+        System.out.println("\n\nThe price for your " + this.meat + " " + this.name + " on a " + this.roll + " roll is:\n" +
+                            " * Burger: $" + String.format("%.2f", this.price));
+        totalPrice += this.lettuce.pricingAtEnd();
+        totalPrice += this.tomato.pricingAtEnd();
+        totalPrice += this.cheese.pricingAtEnd();
+        totalPrice += this.onion.pricingAtEnd();
+        totalPrice += this.bacon.pricingAtEnd();
+        totalPrice += this.mushroom.pricingAtEnd();
+        return totalPrice;
+    }
+
+    public void getTotalPrice() {
+        double price = priceBurger();
+        System.out.println("Your total price was: $" + String.format("%.2f", price));
     }
 }
